@@ -8,7 +8,7 @@ public interface Graphe<T> {
     public int compterNoeuds();
     public int degreMax();
 
-    public Set<T> getNoeuds();
+    public Set<<Noeud<T>> getNoeuds();
     public Noeud<T> getNoeud(T label);
 
     public boolean ajouterNoeud(Noeud<T> v);
