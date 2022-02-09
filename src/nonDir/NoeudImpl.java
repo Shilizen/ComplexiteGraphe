@@ -1,6 +1,7 @@
 package nonDir;
 
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class NoeudImpl<T> extends Noeud<T>{
 
@@ -15,4 +16,8 @@ public class NoeudImpl<T> extends Noeud<T>{
     }
 
 
+    @Override
+    public String toString() {
+        return label.toString() + ": " + voisins.stream().map(n -> n.label.toString()).collect(Collectors.joining("; "));
+    }
 }

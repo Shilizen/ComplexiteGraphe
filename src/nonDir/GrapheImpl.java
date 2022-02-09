@@ -97,4 +97,14 @@ public class GrapheImpl<T> implements Graphe<T>{
     public int degreMax() {
         return noeuds.stream().mapToInt(Noeud::degre).max().orElse(0);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Noeud n :
+                noeuds) {
+            sb.append(n.toString()).append("\n");
+        }
+        return sb.toString();
+    }
 }
