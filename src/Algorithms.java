@@ -9,15 +9,15 @@ import java.util.Set;
 
 public class Algorithms {
 
-    private static <T> List<Noeud<T>> arbreProfondeur(Graphe<T> g, Noeud<T> depart) {
+    public static <T> List<Noeud<T>> arbreProfondeur(Graphe<T> g, Noeud<T> depart) {
         return null;
     }
 
-    private static <T> List<Noeud<T>> arbreLargeur(Graphe<T> g, Noeud<T> depart) {
+    public static <T> List<Noeud<T>> arbreLargeur(Graphe<T> g, Noeud<T> depart) {
         return null;
     }
 
-    private static <T> List<Set<Noeud<T>>> composantesConnexes(Graphe<T> g) {
+    public static <T> List<Set<Noeud<T>>> composantesConnexes(Graphe<T> g) {
         return null;
     }
 
@@ -27,7 +27,7 @@ public class Algorithms {
      * @param <T> Type des labels du graphe
      * @return une paire contenant l'ensemble S et le nombre d'arcs coupés
      */
-    private static <T> Pair<Set<Noeud<T>>, Integer> coupeAlea(Graphe<T> g){
+    public static <T> Pair<Set<Noeud<T>>, Integer> coupeAlea(Graphe<T> g){
         return new Pair<>(null, 0);
     }
 }
