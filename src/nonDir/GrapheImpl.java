@@ -1,5 +1,7 @@
 package nonDir;
 
+import utils.Pair;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +36,21 @@ public class GrapheImpl<T> implements Graphe<T>{
     @Override
     public Noeud<T> getNoeud(T label) {
         return noeuds.stream().filter(n -> n.label.equals(label)).findFirst().orElse(null);
+    }
+
+    @Override
+    public Set<Pair<Noeud<T>, Noeud<T>>> getArcs() {
+        Set<Pair<Noeud<T>, Noeud<T>>> arcs = new HashSet<>();
+        Set<Noeud<T>> tmp = new HashSet<>();
+        for (Noeud<T> v : noeuds) {
+            for (Noeud<T> w : v.getVoisins()){
+                if (!tmp.contains(w))
+                    arcs.add(new Pair<>(v, w));
+            }
+            tmp.add(v);
+        }
+
+        return arcs;
     }
 
     @Override

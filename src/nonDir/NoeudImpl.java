@@ -15,6 +15,13 @@ public class NoeudImpl<T> extends Noeud<T>{
         return this.voisins.size();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof NoeudImpl<?>)
+            return label.equals(((NoeudImpl<?>)obj).label);
+        else
+            return false;
+    }
 
     @Override
     public String toString() {

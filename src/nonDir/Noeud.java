@@ -18,14 +18,6 @@ public abstract class Noeud<T> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Noeud)) return false;
-        Noeud<?> noeud = (Noeud<?>) o;
-        return label.equals(noeud.label);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(label);
     }

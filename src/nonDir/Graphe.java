@@ -1,5 +1,7 @@
 package nonDir;
 
+import utils.Pair;
+
 import java.util.Set;
 
 public interface Graphe<T> {
@@ -10,6 +12,7 @@ public interface Graphe<T> {
 
     public Set<Noeud<T>> getNoeuds();
     public Noeud<T> getNoeud(T label);
+    public Set<Pair<Noeud<T>, Noeud<T>>> getArcs();
 
     public boolean ajouterNoeud(Noeud<T> v);
     public boolean supprimerNoeud(Noeud<T> v);
