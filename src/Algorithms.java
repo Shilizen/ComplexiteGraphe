@@ -1,9 +1,12 @@
 import nonDir.Graphe;
+import nonDir.GrapheImpl;
 import nonDir.Noeud;
+import nonDir.NoeudImpl;
 import utils.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Algorithms {
 
@@ -16,10 +19,11 @@ public class Algorithms {
         public Set<Noeud<E>> visited = new HashSet<>();
         public List<Noeud<E>> parcours(Noeud<E> depart){
             visited.add(depart);
-            return depart.getVoisins().stream()
-                    .filter(n -> !visited.contains(n))
+            return Stream.concat(Stream.of(depart),
+                            depart.getVoisins().stream()
+                            .filter(n -> !visited.contains(n))
                     .map(this::parcours)
-                    .flatMap(Collection::stream)
+                    .flatMap(Collection::stream))
                     .collect(Collectors.toList());
         }
     }
@@ -60,6 +64,96 @@ public class Algorithms {
      * @return une paire contenant l'ensemble S et le nombre d'arcs coupés
      */
     public static <T> Pair<Set<Noeud<T>>, Integer> coupeAlea(Graphe<T> g){
-        return new Pair<>(null, 0);
+        Graphe<List<T>> g_ = toList(g);
+        Set<Pair<Noeud<List<T>>, Noeud<List<T>>>> allArcs = g_.getArcs();
+
+        while (allArcs.size() > 1){
+            Pair<Noeud<List<T>>, Noeud<List<T>>> unArc = randomElement(allArcs);
+            g_ = fusioner(g_, unArc.getA(), unArc.getB());
+            allArcs = g_.getArcs();
+        }
+
+        //un cote de la coupe
+        List<T> cutLabels = g_.getNoeuds().stream().findFirst().orElse(null).getLabel();
+        //recup des noeuds d'origine
+        Set<Noeud<T>> cutNodes = cutLabels.stream().map(g::getNoeud).collect(Collectors.toSet());
+
+        int nbArcsCoupes = 0;
+        for (Noeud<T> u : cutNodes){
+            for (Noeud<T> v: u.getVoisins()){
+                if (!cutNodes.contains(v))
+                    nbArcsCoupes++;
+            }
+        }
+
+        return new Pair<>(cutNodes, nbArcsCoupes);
+    }
+
+    static <T> Graphe<List<T>> fusioner(Graphe<List<T>> in, Noeud<List<T>> a, Noeud<List<T>> b){
+        Graphe<List<T>> out = new GrapheImpl<>();
+        //copie des noeuds sauf a et b
+        for (Noeud<List<T>> n : in.getNoeuds()){
+            if (n != a && n != b)
+                out.ajouterNoeud(n.getLabel());
+        }
+
+        // de même copie des arcs sauf ceux qui concernent a et b
+        Set<Noeud<List<T>>> visites = new HashSet<>();
+        for (Noeud<List<T>> n : in.getNoeuds()){
+            if (n != a && n != b){
+                for (Noeud<List<T>> autre : n.getVoisins()){
+                    if (!visites.contains(autre) && autre != a && autre != b){
+                        out.ajouterArc(n.getLabel(), autre.getLabel());
+                    }
+                }
+            }
+            visites.add(n);
+        }
+
+        // creation du noeud a+b
+        Noeud<List<T>> fusione = new NoeudImpl<List<T>>(a.getLabel());
+        out.ajouterNoeud(fusione);
+
+        //creation des arcs du noeud a+b
+        Set<Noeud<List<T>>> tousVoisins = new HashSet<>(a.getVoisins());
+        tousVoisins.addAll(b.getVoisins());
+        tousVoisins.remove(a);
+        tousVoisins.remove(b);
+        a.getLabel().addAll(b.getLabel());
+
+        // ajout des acrs au nouveau graphe
+        for (Noeud<List<T>> voisin : tousVoisins){
+            out.ajouterArc(fusione, out.getNoeud(voisin.getLabel()));
+        }
+
+        return out;
+    }
+
+    // changement de type pour supporter les labels de noeuds fusionés
+    static <T> Graphe<List<T>> toList(Graphe<T> in){
+        Graphe<List<T>> out = new GrapheImpl<>();
+        in.getNoeuds().forEach(n -> {
+            List<T> l = new ArrayList<>();
+            l.add(n.getLabel());
+            out.ajouterNoeud(l);
+        });
+        out.getNoeuds().forEach(u -> {
+            in.getNoeud(u.getLabel().get(0)).getVoisins().forEach(v -> {
+                List<T> l = new ArrayList<>();
+                l.add(v.getLabel());
+                out.ajouterArc(u, out.getNoeud(l));
+            });
+        });
+
+        return out;
+    }
+
+    // prend un element au hasard dans un set
+    private static <T> T randomElement(Set<T> set) {
+        int cpt = (int) (Math.random() * set.size());
+        for(T el: set)
+            if (--cpt < 0)
+                return el;
+        return null;
     }
 }
