@@ -62,4 +62,23 @@ public class Algorithms {
     public static <T> Pair<Set<Noeud<T>>, Integer> coupeAlea(Graphe<T> g){
         return new Pair<>(null, 0);
     }
+    
+    // changement de type pour supporter les labels de noeuds fusionés
+    static <T> Graphe<List<T>> toList(Graphe<T> in){
+        Graphe<List<T>> out = new GrapheImpl<>();
+        in.getNoeuds().forEach(n -> {
+            List<T> l = new ArrayList<>();
+            l.add(n.getLabel());
+            out.ajouterNoeud(l);
+        });
+        out.getNoeuds().forEach(u -> {
+            in.getNoeud(u.getLabel().get(0)).getVoisins().forEach(v -> {
+                List<T> l = new ArrayList<>();
+                l.add(v.getLabel());
+                out.ajouterArc(u, out.getNoeud(l));
+            });
+        });
+
+        return out;
+    }
 }
