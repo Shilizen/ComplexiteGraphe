@@ -15,4 +15,7 @@ public interface DiGraphe<T> {
     public boolean supprimerNoeud(T v);
     public boolean ajouterArc(T src, T dest, double val);
     public boolean supprimerArc(T v, T w);
+
+    public Set<T> getSuccesseurs(T v);
+    public double getValeurArc(T u, T v);
 }

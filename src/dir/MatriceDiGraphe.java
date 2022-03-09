@@ -15,7 +15,7 @@ public class MatriceDiGraphe<T> implements DiGraphe<T> {
         //pointless
     }
 
-    private MatriceDiGraphe(DiGraphe<T> source){
+    public MatriceDiGraphe(DiGraphe<T> source){
         //TODO
     }
 
@@ -66,5 +66,15 @@ public class MatriceDiGraphe<T> implements DiGraphe<T> {
     @Override
     public boolean supprimerArc(T v, T w) {
         throw new UnsupportedOperationException("Immutable");
+    }
+
+    @Override
+    public Set<T> getSuccesseurs(T v) {
+        return null; //TODO
+    }
+
+    @Override
+    public double getValeurArc(T u, T v) {
+        return 0;  //TODO
     }
 }

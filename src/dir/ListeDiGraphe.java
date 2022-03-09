@@ -14,11 +14,11 @@ public class ListeDiGraphe<T> implements DiGraphe<T> {
 
     private Set<Arc<T>> arcs;
 
-    private ListeDiGraphe(){
+    public ListeDiGraphe(){
         arcs = new HashSet<>();
     }
 
-    private ListeDiGraphe(DiGraphe<T> source){
+    public ListeDiGraphe(DiGraphe<T> source){
         arcs = new HashSet<>();
         if (source instanceof ListeDiGraphe){
             ListeDiGraphe<T> s = (ListeDiGraphe<T>) source;
@@ -72,5 +72,29 @@ public class ListeDiGraphe<T> implements DiGraphe<T> {
         if (victime == null)
             return false;
         return arcs.remove(victime);
+    }
+
+    @Override
+    public double getValeurArc(T u, T v) {
+        for (Arc<T> arc : arcs){
+            if (arc.source.equals(u) && arc.destination.equals(v))
+                return arc.valeur;
+        }
+        throw new IllegalArgumentException("Both nodes must be in graph");
+    }
+
+    @Override
+    public Set<T> getSuccesseurs(T v) {
+        HashSet<T> res = new HashSet<>();
+        for (Arc<T> arc : arcs){
+            if (arc.source.equals(v))
+                res.add(arc.destination);
+        }
+        return res;
+    }
+
+    @Override
+    public String toString() {
+        return arcs.stream().map(Arc::toString).collect(Collectors.joining("\n"));
     }
 }
