@@ -20,22 +20,17 @@ public class DiGrapheLoader {
             int size = Integer.parseInt(br.readLine().replace("DIMENSION", "").replace(":","").replace(" ", ""));
             String metric = br.readLine().replace("EDGE_WEIGHT_TYPE","").replace(":","").replace(" ", "");
 
-            System.out.println(name);
-            System.out.println(comment);
-            System.out.println(type);
-            System.out.println(size);
-            System.out.println(metric);
-
             if (metric.equals("EUC_2D")){
                 int[] ids = new int[size];
                 double[][] points = new double[size][2];
-                System.out.println(br.readLine());
+                boolean markers_check = br.readLine().contains("COORD");
                 for (int i = 0; i < size; i++) {
                     String[] tmp = br.readLine().split(" ");
                     ids[i] = Integer.parseInt(tmp[0]);
                     points[i] = new double[]{Double.parseDouble(tmp[1]), Double.parseDouble(tmp[2])};
                 }
-                System.out.println(br.readLine());
+                markers_check = markers_check && br.readLine().contains("EOF");
+                System.out.printf("Anomaly reading coordinates ? %s %n", !markers_check);
 
                 // Init the graph with ids of nodes
                 MatriceDiGraphe<String> g = new MatriceDiGraphe<>(size);
@@ -47,7 +42,10 @@ public class DiGrapheLoader {
                 double[][] adjptr = g.getAdj();
                 for (int i = 0; i < size; i++) {
                     for (int j = i+1; j < size; j++) {
-                        adjptr[i][j] = Math.sqrt(Math.pow(points[i][0] - points[j][0],2) + Math.pow(points[i][1] - points[j][1],2));
+                        // complies with http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/tsp95.pdf
+                        double xd = points[i][0] - points[j][0];
+                        double yd = points[i][1] - points[j][1];
+                        adjptr[i][j] = Math.round(Math.sqrt(xd*xd + yd*yd));
                         adjptr[j][i] = adjptr[i][j];
                     }
                 }
