@@ -142,15 +142,15 @@ public class MatriceDiGraphe<T> implements DiGraphe<T> {
         return adj[idx][idx2];
     }
 
-    void setIds(ArrayList<T> ids) {
+    public void setIds(ArrayList<T> ids) {
         this.ids = ids;
     }
 
-    ArrayList<T> getIds() {
+    public ArrayList<T> getIds() {
         return ids;
     }
 
-    double[][] getAdj() {
+    public double[][] getAdj() {
         return adj;
     }
 
