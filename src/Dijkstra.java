@@ -16,7 +16,13 @@ public class Dijkstra<T> {
         g = graphe;
         this.source = source;
         unvisited = g.getNoeuds();
-        distances = //TODO
+        distances = new HashMap<>();
+        for (T node : unvisited){
+            if (!node.equals(source))
+                distances.put(node, Double.POSITIVE_INFINITY);
+            else
+                distances.put(source, 0d);
+        }
     }
 
     public void run(){
@@ -28,7 +34,12 @@ public class Dijkstra<T> {
     private T getMin(){
         T argMin = null;
         double min = Double.POSITIVE_INFINITY;
-        //TODO
+        for (T noeud : unvisited){
+            if (distances.get(noeud) < min){
+                argMin = noeud;
+                min = distances.get(noeud);
+            }
+        }
         return argMin;
     }
 
