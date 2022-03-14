@@ -20,7 +20,7 @@ public class DiGrapheLoader {
             int size = Integer.parseInt(br.readLine().replace("DIMENSION", "").replace(":","").replace(" ", ""));
             String metric = br.readLine().replace("EDGE_WEIGHT_TYPE","").replace(":","").replace(" ", "");
 
-            if (metric.equals("EUC_2D")){
+            if (metric.equals("EUC_2D") || metric.equals("CEIL_2D")){
                 int[] ids = new int[size];
                 double[][] points = new double[size][2];
                 boolean markers_check = br.readLine().contains("COORD");
@@ -45,7 +45,10 @@ public class DiGrapheLoader {
                         // complies with http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/tsp95.pdf
                         double xd = points[i][0] - points[j][0];
                         double yd = points[i][1] - points[j][1];
-                        adjptr[i][j] = Math.round(Math.sqrt(xd*xd + yd*yd));
+                        if (metric.equals("EUC_2D"))
+                            adjptr[i][j] = Math.round(Math.sqrt(xd*xd + yd*yd));
+                        else
+                            adjptr[i][j] = Math.ceil(Math.sqrt(xd*xd + yd*yd));
                         adjptr[j][i] = adjptr[i][j];
                     }
                 }
