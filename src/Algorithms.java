@@ -149,7 +149,7 @@ public class Algorithms {
     }
 
     // prend un element au hasard dans un set
-    private static <T> T randomElement(Set<T> set) {
+    static <T> T randomElement(Set<T> set) {
         int cpt = (int) (Math.random() * set.size());
         for(T el: set)
             if (--cpt < 0)
