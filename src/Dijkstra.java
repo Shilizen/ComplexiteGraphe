@@ -26,8 +26,17 @@ public class Dijkstra<T> {
     }
 
     public void run(){
-        while (getMin() != null) {
-            //TODO
+        while (unvisited.size() > 0 && getMin() != null) {
+            T current = getMin();
+            double currentDist = distances.get(current);
+            for (T suivant : g.getSuccesseurs(current)) {
+                if (unvisited.contains(suivant)) {
+                    double dist = currentDist + g.getValeurArc(current, suivant);
+                    if (dist < distances.get(suivant))
+                        distances.put(suivant, dist);
+                }
+            }
+            unvisited.remove(current);
         }
     }
 
