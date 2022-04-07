@@ -33,4 +33,8 @@ public class Arc <T>{
     public String toString() {
         return source.toString() + "-(" + valeur + ")->" + destination.toString();
     }
+
+    public double getValeur() {
+        return valeur;
+    }
 }
