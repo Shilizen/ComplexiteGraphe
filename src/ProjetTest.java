@@ -1,5 +1,13 @@
+import dir.Arc;
+import dir.DiGraphe;
 import dir.DiGrapheLoader;
 import dir.MatriceDiGraphe;
+import nonDir.Noeud;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ProjetTest {
     //Valeurs obj optimales http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/STSP.html
